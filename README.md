@@ -2,7 +2,7 @@
 
 
 # Todo List vith React + TypeScript + Vite
-![]("./src/assets/01.PNG")
+![](./src/assets/01.PNG)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
