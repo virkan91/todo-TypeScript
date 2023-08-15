@@ -6,6 +6,7 @@ interface Todo {
   id: number;
   title: string;
   complete: boolean;
+  edited: boolean;
 }
 
 function App() {
@@ -14,19 +15,23 @@ function App() {
       id: 1,
       title: "Virkan",
       complete: false,
+      edited: false,
     },
     {
       id: 2,
       title: "Shirinov",
-      complete: true,
+      complete: false,
+      edited: false,
     },
   ]);
 
   // sets
   const [text, setText] = useState<string>("");
   const [modal, setModal] = useState<boolean>(false);
-  const [textEdit, setTextEdit] = useState<string>("")
-  const [idx, setIdx] = useState<number>(0)
+  const [textEdit, setTextEdit] = useState<string>("");
+  const [idx, setIdx] = useState<number>(0);
+
+  const [editedText, setEditedText] = useState<string>("");
 
   // Delete
   const deleteData = (id: number) => {
@@ -37,23 +42,24 @@ function App() {
   };
 
   // Edit
-  const editData = (event) => {
-
-    event.preventDefault()
+  const editData = (event: any) => {
+    event.preventDefault();
     if (textEdit.trim().length != 0) {
       let newObj = data.map((elem) => {
         if (idx == elem.id) {
           elem.title = textEdit;
+          if(editedText != textEdit ) elem.edited = true
+          
         }
         return elem;
       });
       setData(newObj);
       setModal(false);
+      
     }
-    
-  }
-// windiw modal
-const onCloseModal = useRef()
+  };
+  // windiw modal
+  const onCloseModal = useRef();
   return (
     <>
       <form
@@ -64,44 +70,49 @@ const onCloseModal = useRef()
               id: Date.now(),
               title: text,
               complete: false,
+              edited: false,
             };
             setData([...data, newData]);
             setText("");
           }
         }}
-        className="flex gap-4 p-[10px] bg-slate-500"
+        className="flex gap-4 p-[10px] bg-slate-500 pl-[82px]"
       >
         <input
           required
           onChange={(event) => setText(event.target.value)}
           value={text}
           type="text"
-          className="border rounded-[8px] outline-none"
+          placeholder="Name:"
+          className="border rounded-[8px] outline-none pl-[20px]"
         />
 
-        <button className="bg-[#ccc] p-[10px] rounded-md text-[green]">
+        <button className="bg-[#ccc] p-[10px] rounded-md text-[green] font-extrabold">
           Add
         </button>
       </form>
-      <div className="grid grid-cols-4 py-[30px] gap-4 text-center justify-around max-w-[1200px] m-auto">
+      <div className="grid grid-cols-4 py-[30px] gap-4 text-center justify-around max-w-[1200px] m-auto ">
         {data.map((elem) => {
           return (
-            <div className="bg-slate-500 rounded-md">
-              <h1
-                style={{
-                  color: elem.complete ? "red" : "black",
-                  textDecoration: elem.complete ? "line-through" : "none",
-                }}
-                className="text-[20px] text-[#FFF] p-3"
-              >
-                {elem.title}
-              </h1>
-              <div className="bg-lime-950 py-[10px] flex justify-around">
+            <div className="bg-slate-500 rounded-md drop-shadow-xl">
+              <div className="h-[90px]">
+                <h1
+                  style={{
+                    color: elem.complete ? "red" : "white",
+                    textDecoration: elem.complete ? "line-through" : "none",
+                  }}
+                  className="text-[20px] text-[#FFFFFF] p-3"
+                >
+                  {elem.title}
+                </h1>
+                {elem.edited ? <p className="text-white">Отредактировано</p> : null}
+              </div>
+              <div className="bg-white py-[10px] flex justify-around">
                 <button
                   onClick={() => deleteData(elem.id)}
                   className="bg-red-900 text-[#FFF] p-[2px_8px] rounded-md"
                 >
-                  Del
+                  Delete
                 </button>
 
                 <button
@@ -109,6 +120,8 @@ const onCloseModal = useRef()
                     setModal(true);
                     setTextEdit(elem.title);
                     setIdx(elem.id);
+                    setEditedText(elem.title);
+
                   }}
                   className="bg-lime-800 text-[#FFF] p-[2px_8px] rounded-md"
                 >
