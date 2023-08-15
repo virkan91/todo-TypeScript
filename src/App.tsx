@@ -132,23 +132,35 @@ const onCloseModal = useRef()
           );
         })}
         {modal ? (
-          <div ref={onCloseModal} onClick={(event) => {
-            if(event.target == onCloseModal.current) setModal(false)
-          }} className="w-full h-screen flex justify-center items-center bg-[#ccc]/50 absolute top-0 left-0">
+          <div
+            ref={onCloseModal}
+            onClick={(event) => {
+              if (event.target == onCloseModal.current) setModal(false);
+            }}
+            className="w-full h-screen flex justify-center items-center bg-[#ccc]/50 absolute top-0 left-0"
+          >
             <form
               action=""
               onSubmit={(event) => editData(event)}
-              className="bg-slate-950  p-[50px] text-white"
+              className="bg-slate-500 px-[14px] pb-[20px] rounded-lg text-white"
             >
-              <input onChange={(event) => setTextEdit(event.target.value)}
+              <div className="flex justify-end pb-[20px] pt-[10px]">
+                <button onClick={() => setModal(false)}>X</button>
+              </div>
+              <input
+                onChange={(event) => setTextEdit(event.target.value)}
                 required
                 value={textEdit}
                 type="text"
-                className="text-[#000] outline-none"
+                className="text-[#000] outline-none p-2 rounded-md"
               />
-              <div className="flex justify-around">
-                <button type="submit">Edit</button>
-                <button onClick={() => setModal(false)}>X</button>
+              <div className="flex justify-around mt-[20px]">
+                <button
+                  type="submit"
+                  className="bg-lime-800 text-[#FFF] p-[2px_8px] rounded-md"
+                >
+                  Edit
+                </button>
               </div>
             </form>
           </div>
