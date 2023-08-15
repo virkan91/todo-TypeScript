@@ -2,7 +2,7 @@
 
 
 # Todo List vith React + TypeScript + Vite
-![](./src/assets/01.PNG)
+![](./src//assets//01.PNG)
 ## modal Edit
 ![](./src/assets/02.PNG)
 
